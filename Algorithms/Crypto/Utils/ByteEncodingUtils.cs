@@ -60,4 +60,22 @@ public static class ByteEncodingUtils
     {
         BinaryPrimitives.WriteUInt64BigEndian(byteStream, value);
     }
+
+    /// <summary>
+    /// Converts a sequence of 8 bytes starting from the specified offset in a byte array
+    /// to a 64-bit unsigned integer using little-endian encoding.
+    /// </summary>
+    /// <param name="byteStream">The byte array containing the little-endian encoded 64-bit integer.</param>
+    /// <param name="offset">The starting position within the byte array where the 8-byte sequence begins.</param>
+    /// <returns>A 64-bit unsigned integer representing the converted value from the byte array.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the <paramref name="offset"/> is out of the range of the <paramref name="byteStream"/> array length.
+    /// </exception>
+    /// <remarks>
+    /// This method uses little-endian encoding to interpret the byte sequence, meaning the least significant byte comes first.
+    /// </remarks>
+    public static ulong LittleEndianToUint64(byte[] byteStream, int offset)
+    {
+        return BinaryPrimitives.ReadUInt64LittleEndian(byteStream.AsSpan(offset));
+    }
 }

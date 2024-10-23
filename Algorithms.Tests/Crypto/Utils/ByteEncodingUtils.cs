@@ -77,5 +77,47 @@ namespace Algorithms.Tests.Crypto.Utils
             // Assert
             act.Should().Throw<ArgumentOutOfRangeException>();
         }
+
+        [Test]
+        public void LittleEndianToUint64_ShouldConvertBytesCorrectly()
+        {
+            // Arrange
+            byte[] byteStream = { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }; // Little-endian representation of 1
+            const int offset = 0;
+
+            // Act
+            var result = ByteEncodingUtils.LittleEndianToUint64(byteStream, offset);
+
+            // Assert
+            result.Should().Be(1);
+        }
+
+        [Test]
+        public void LittleEndianToUint64_ShouldThrowOutOfRangeExceptionForInvalidOffset()
+        {
+            // Arrange
+            byte[] byteStream = { 0x01, 0x00, 0x00 }; // Not enough bytes
+            const int offset = 1;
+
+            // Act
+            Action act = () => ByteEncodingUtils.LittleEndianToUint64(byteStream, offset);
+
+            // Assert
+            act.Should().Throw<ArgumentOutOfRangeException>();
+        }
+
+        [Test]
+        public void LittleEndianToUint64_ShouldConvertCorrectlyAtOffset()
+        {
+            // Arrange
+            byte[] byteStream = { 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00 }; // Little-endian 1 at offset 4
+            const int offset = 4;
+
+            // Act
+            var result = ByteEncodingUtils.LittleEndianToUint64(byteStream, offset);
+
+            // Assert
+            result.Should().Be(1);
+        }
     }
 }
